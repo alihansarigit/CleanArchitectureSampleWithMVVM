@@ -4,7 +4,6 @@ import com.yuhdeveloper.cleanarchitecturesample.feature_news.domain.model.News
 import kotlinx.coroutines.flow.Flow
 
 interface NewsRepository {
-
     fun getNews(): Flow<List<News>>
 
     suspend fun getNewsById(id:Int):News
@@ -13,4 +12,5 @@ interface NewsRepository {
 
     suspend fun deleteNews(news:News)
 
+    suspend fun updateNews(news:News)
 }

@@ -4,5 +4,6 @@ data class NewsUseCases(
     val addNews:AddNews,
     val deleteNews:DeleteNews,
     val getNews:GetNews,
-    val getNewsById: GetNewsById
+    val getNewsById: GetNewsById,
+    val updateNewsById:UpdateNewsById,
 )

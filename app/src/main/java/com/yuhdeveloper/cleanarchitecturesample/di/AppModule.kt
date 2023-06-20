@@ -40,7 +40,8 @@ object AppModule {
             addNews = AddNews(repository),
             deleteNews = DeleteNews(repository),
             getNews = GetNews(repository),
-            getNewsById = GetNewsById(repository)
+            getNewsById = GetNewsById(repository),
+            updateNewsById = UpdateNewsById(repository)
         )
     }
 

@@ -10,7 +10,6 @@ import com.yuhdeveloper.cleanarchitecturesample.feature_news.domain.model.News
     version = 1
 )
 abstract class NewsDatabase: RoomDatabase() {
-
     abstract val newsDao: NewsDao
 
     companion object{

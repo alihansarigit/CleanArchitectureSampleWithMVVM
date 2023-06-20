@@ -22,4 +22,8 @@ class NewsRepositoryImpl(private val dao:NewsDao) : NewsRepository {
     override suspend fun deleteNews(news: News) {
         dao.deleteNews(news)
     }
+
+    override suspend fun updateNews(news: News) {
+        dao.updateNews(news)
+    }
 }
