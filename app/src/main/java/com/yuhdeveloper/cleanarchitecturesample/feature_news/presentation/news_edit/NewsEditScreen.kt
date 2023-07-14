@@ -17,20 +17,16 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun NewsEditScreen(
     viewModel: NewsEditViewModel = hiltViewModel(),
-    navigate: NavController
+    navController: NavController
 ) {
 
     val state = viewModel.state
-    val title = viewModel.title
-    val description = viewModel.description
-    val imageUrl = viewModel.imageUrl
-    val viewCount = viewModel.viewCount
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest {
             when (it) {
                 is EditEffect.onBack -> {
-                    navigate.popBackStack()
+                    navController.popBackStack()
                 }
             }
         }
@@ -64,7 +60,6 @@ fun NewsEditScreen(
             modifier = Modifier.fillMaxWidth()
         )
 
-        Text(text = "This news read ${state.value.viewCount} times")
 
         Button(onClick = {
             viewModel.onEvent(EditEvent.Update)

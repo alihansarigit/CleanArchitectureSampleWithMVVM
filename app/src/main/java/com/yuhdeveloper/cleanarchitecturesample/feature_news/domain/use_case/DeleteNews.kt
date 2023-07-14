@@ -6,6 +6,6 @@ import com.yuhdeveloper.cleanarchitecturesample.feature_news.domain.repository.N
 class DeleteNews(val repository: NewsRepository){
 
     suspend operator fun invoke(news: News){
-        repository.deleteNews(news)
+        //repository.deleteNews(news)
     }
 }

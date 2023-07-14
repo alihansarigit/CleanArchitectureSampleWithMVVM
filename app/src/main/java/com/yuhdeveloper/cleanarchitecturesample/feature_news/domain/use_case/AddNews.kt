@@ -5,6 +5,6 @@ import com.yuhdeveloper.cleanarchitecturesample.feature_news.domain.repository.N
 
 class AddNews(val repository: NewsRepository){
     suspend operator fun invoke(news:News){
-        repository.insertNews(news)
+       // repository.insertNews(news)
     }
 }

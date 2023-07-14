@@ -1,4 +1,4 @@
-package com.yuhdeveloper.cleanarchitecturesample.feature_news.data.data_source
+package com.yuhdeveloper.cleanarchitecturesample.feature_news.data.source.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

@@ -65,12 +65,11 @@ class MainActivity : ComponentActivity() {
 
                 NavHost(navController = navController, startDestination = "Home" ){
                     composable("Home"){
-                        FeedScreen(navigate = navController)
+                        FeedScreen(navController = navController)
                     }
 
-                    composable("AddNote",
-                    ){
-                        NewsAddScreen(navigate = navController)
+                    composable("AddNote"){
+                        NewsAddScreen(navController = navController)
                     }
 
                     composable("EditNews?newsId={newsId}",
@@ -79,7 +78,7 @@ class MainActivity : ComponentActivity() {
                             type = NavType.IntType
                             defaultValue = -1
                         })){
-                        NewsEditScreen(navigate = navController)
+                        NewsEditScreen(navController = navController)
                     }
 
                     composable("NewsDetail?newsId={newsId}",
@@ -87,7 +86,7 @@ class MainActivity : ComponentActivity() {
                         type = NavType.IntType
                         defaultValue = -1
                     })){
-                        NewsDetailScreen(navigate = navController)
+                        NewsDetailScreen(navController = navController)
                     }
                 }
 

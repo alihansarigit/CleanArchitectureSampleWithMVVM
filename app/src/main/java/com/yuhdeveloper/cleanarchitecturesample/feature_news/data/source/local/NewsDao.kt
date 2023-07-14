@@ -1,8 +1,7 @@
-package com.yuhdeveloper.cleanarchitecturesample.feature_news.data.data_source
+package com.yuhdeveloper.cleanarchitecturesample.feature_news.data.source.local
 
 import androidx.room.*
 import com.yuhdeveloper.cleanarchitecturesample.feature_news.domain.model.News
-import com.yuhdeveloper.cleanarchitecturesample.feature_news.domain.repository.NewsRepository
 import kotlinx.coroutines.flow.Flow
 
 @Dao

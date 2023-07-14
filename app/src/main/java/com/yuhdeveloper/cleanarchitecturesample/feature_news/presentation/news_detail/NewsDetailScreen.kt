@@ -17,7 +17,7 @@ import coil.compose.AsyncImage
 @Composable
 fun NewsDetailScreen(
      viewModel:NewsDetailViewModel = hiltViewModel(),
-     navigate:NavController
+     navController:NavController
 ) {
 
      val state = viewModel.state

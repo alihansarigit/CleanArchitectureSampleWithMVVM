@@ -49,11 +49,10 @@ class NewsAddViewModel @Inject constructor(
             is AddEvent.saveNews->{
                 viewModelScope.launch {
                     newsUseCases.addNews(news = News(
-                        id = null,
+                        id = 0,
                         title = _state.value.title,
                         description = _state.value.description,
                         imageUrl = _state.value.imageUrl,
-                        viewCount = _state.value.viewCount
                     ))
                     _eventFlow.emit(AddEffect.onBack)
                 }

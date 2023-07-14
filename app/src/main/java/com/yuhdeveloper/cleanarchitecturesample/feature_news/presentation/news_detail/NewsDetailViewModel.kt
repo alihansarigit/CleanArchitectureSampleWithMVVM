@@ -11,14 +11,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NewsDetailViewModel
-@Inject constructor(val useCases: NewsUseCases,
+@Inject constructor(private val useCases: NewsUseCases,
     savedStateHandle: SavedStateHandle) : ViewModel() {
 
     private val _state = mutableStateOf(NewsDetailState())
     val state = _state
 
 
-    init {
+    /*init {
         val newsId = savedStateHandle.get<Int>("newsId")
         if(newsId != -1){
             viewModelScope.launch {
@@ -35,6 +35,6 @@ class NewsDetailViewModel
                 )
             }
         }
-    }
+    }*/
 
 }

@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.collectLatest
 @Composable
 fun NewsAddScreen(
     viewModel:NewsAddViewModel = hiltViewModel(),
-    navigate:NavController
+    navController:NavController
 ) {
 
     val title = viewModel.title
@@ -34,7 +34,7 @@ fun NewsAddScreen(
         viewModel.eventFlow.collectLatest {
             when(it){
                 AddEffect.onBack->{
-                    navigate.popBackStack()
+                    navController.popBackStack()
                 }
             }
         }
