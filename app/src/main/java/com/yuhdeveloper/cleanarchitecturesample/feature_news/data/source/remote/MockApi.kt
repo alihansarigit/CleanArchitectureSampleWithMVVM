@@ -1,13 +1,13 @@
 package com.yuhdeveloper.cleanarchitecturesample.feature_news.data.source.remote
 
 import com.yuhdeveloper.cleanarchitecturesample.feature_news.data.dto.NewsDto
-import kotlinx.coroutines.flow.Flow
 import okhttp3.RequestBody
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
-import retrofit2.http.Query
 
 interface MockApi {
     @GET("news")
@@ -22,5 +22,15 @@ interface MockApi {
     suspend fun updateNews(
         @Path("id") id:Int,
         @Body requestBody:RequestBody
+    ):NewsDto
+
+    @DELETE("news/{id}")
+    suspend fun deleteNews(
+        @Path("id") id:Int
+    ):NewsDto
+
+    @POST("news")
+    suspend fun insertNews(
+         @Body requestBody: RequestBody
     ):NewsDto
 }

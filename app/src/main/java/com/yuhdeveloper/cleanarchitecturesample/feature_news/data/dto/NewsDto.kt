@@ -7,9 +7,6 @@ data class NewsDto(
     val newsPicture:String,
     val newsDescription:String,
     val newsTitle:String,
-    val userId: String,
-    val createdAt:String,
-    val username:String
 )
 
 
@@ -19,5 +16,14 @@ fun NewsDto.toNews():News{
         title = newsTitle,
         description = newsDescription,
         imageUrl = newsPicture
+    )
+}
+
+fun News.toDto():NewsDto{
+    return NewsDto(
+        newsId = id,
+        newsPicture = imageUrl,
+        newsDescription = description,
+        newsTitle = title
     )
 }

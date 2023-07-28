@@ -1,14 +1,16 @@
 package com.yuhdeveloper.cleanarchitecturesample.feature_news.presentation.news_add_item
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yuhdeveloper.cleanarchitecturesample.common.Resource
 import com.yuhdeveloper.cleanarchitecturesample.feature_news.domain.model.News
 import com.yuhdeveloper.cleanarchitecturesample.feature_news.domain.use_case.NewsUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,28 +22,11 @@ class NewsAddViewModel @Inject constructor(
 
     private val _state = mutableStateOf(NewsAddState())
     val state = _state
-    private val _title = mutableStateOf("")
-    val title = _title
-    private val _description = mutableStateOf("")
-    val description = _description
-    private val _imageUrl = mutableStateOf("")
-    val imageUrl = _imageUrl
-    private val _viewCount = mutableStateOf(0)
-    val viewCount = _viewCount
-
     private val _eventFlow = MutableSharedFlow<AddEffect>()
     val eventFlow = _eventFlow
 
-    private val currentNewsId:Int = -1
-
     init {
-        val id = savedStateHandle.get<Int>("noteId")?.let {
-            if(it!=-1){
-                // Edit Area
-            }
-        }
 
-        Log.d("TAG",id.toString() )
     }
 
     fun onEvent(event: AddEvent){
@@ -53,8 +38,22 @@ class NewsAddViewModel @Inject constructor(
                         title = _state.value.title,
                         description = _state.value.description,
                         imageUrl = _state.value.imageUrl,
-                    ))
-                    _eventFlow.emit(AddEffect.onBack)
+                    )).onEach {
+                        when(it){
+                            is Resource.Error -> {
+                                _state.value.isLoading = false
+                                _eventFlow.emit(AddEffect.showMessage(it.error))
+                            }
+                            Resource.Loading -> {
+                                _state.value.isLoading = true
+                            }
+                            is Resource.Success -> {
+                                _state.value.isLoading = true
+                                _eventFlow.emit(AddEffect.onBack)
+                            }
+                        }
+
+                    }.launchIn(viewModelScope)
                 }
             }
             is AddEvent.ChangeTitle -> {
@@ -75,13 +74,6 @@ class NewsAddViewModel @Inject constructor(
                 viewModelScope.launch {
                     _state.value = _state.value.copy(
                         imageUrl = event.imageUrl
-                    )
-                }
-            }
-            is AddEvent.ChangeViewCount -> {
-                viewModelScope.launch {
-                    _state.value = _state.value.copy(
-                        viewCount = event.viewCount
                     )
                 }
             }

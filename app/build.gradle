@@ -4,6 +4,9 @@ plugins {
     id 'kotlin-kapt'
    // id 'com.google.dagger.hilt.android'
     id 'dagger.hilt.android.plugin'
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
+
 }
 
 android {
@@ -104,4 +107,12 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0'
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.4.0"
+
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.2.0"))
+
+    // Add the dependencies for the Crashlytics and Analytics libraries
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
 }

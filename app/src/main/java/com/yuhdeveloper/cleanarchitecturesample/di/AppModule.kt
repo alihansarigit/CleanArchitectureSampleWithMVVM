@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.room.Room
 import com.yuhdeveloper.cleanarchitecturesample.common.Constants
 import com.yuhdeveloper.cleanarchitecturesample.feature_news.data.preferences.DataStoreManager
-import com.yuhdeveloper.cleanarchitecturesample.feature_news.data.source.local.NewsDatabase
 import com.yuhdeveloper.cleanarchitecturesample.feature_news.data.repository.NewsRepositoryImpl
+import com.yuhdeveloper.cleanarchitecturesample.feature_news.data.source.local.NewsDatabase
 import com.yuhdeveloper.cleanarchitecturesample.feature_news.data.source.remote.MockApi
 import com.yuhdeveloper.cleanarchitecturesample.feature_news.domain.repository.NewsRepository
 import com.yuhdeveloper.cleanarchitecturesample.feature_news.domain.use_case.*

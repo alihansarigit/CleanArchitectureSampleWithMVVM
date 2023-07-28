@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">CleanArchitectureSample</string>
+
+    <string name="titlePlaceHolder">Title</string>
+    <string name="descriptionPlaceHolder">Description</string>
+    <string name="imagePlaceHolder">Image Url</string>
 </resources>

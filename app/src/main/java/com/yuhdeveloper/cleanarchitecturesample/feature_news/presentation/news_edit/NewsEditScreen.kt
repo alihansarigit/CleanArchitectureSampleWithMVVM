@@ -1,14 +1,29 @@
 package com.yuhdeveloper.cleanarchitecturesample.feature_news.presentation.news_edit
 
+import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
+import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -21,6 +36,7 @@ fun NewsEditScreen(
 ) {
 
     val state = viewModel.state
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = true) {
         viewModel.eventFlow.collectLatest {
@@ -28,43 +44,62 @@ fun NewsEditScreen(
                 is EditEffect.onBack -> {
                     navController.popBackStack()
                 }
+
+                is EditEffect.showMessage -> {
+                    Toast.makeText(context, "${it.message}", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
-    Column(
-        modifier = Modifier
+    Box(modifier = Modifier.fillMaxSize()){
+
+
+        Column(modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
-            .padding(5.dp)
-    ) {
+            .padding(5.dp)) {
 
-        TextField(
-            value = state.value.title,
-            placeholder = { Text(text = "Set Title") },
-            onValueChange = { viewModel.onEvent(EditEvent.ChangeTitle(it))  },
-            modifier = Modifier.fillMaxWidth()
-        )
+            Spacer(modifier = Modifier.size(20.dp))
 
-        TextField(
-            value = state.value.description,
-            placeholder = { Text(text = "Set Description") },
-            onValueChange = { viewModel.onEvent(EditEvent.ChangeDescription(it))  },
-            modifier = Modifier.fillMaxWidth()
-        )
+            Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "",
+                modifier = Modifier.clickable{
+                    navController.popBackStack()
+                })
 
-        TextField(
-            value = state.value.imageUrl,
-            onValueChange = { viewModel.onEvent(EditEvent.ChangeImageUrl(it))  },
-            placeholder = { Text(text = "Set Image Url") },
-            modifier = Modifier.fillMaxWidth()
-        )
+            Spacer(modifier = Modifier.size(20.dp))
 
+            OutlinedTextField(value = state.value.title,
+                onValueChange = { viewModel.onEvent(EditEvent.ChangeTitle(it)) },
+                label = { Text(text = stringResource(id = viewModel.state.value.titlePlaceholder))},
+                modifier = Modifier.fillMaxWidth())
 
-        Button(onClick = {
-            viewModel.onEvent(EditEvent.Update)
-        }) {
-            Text(text = "Update")
+            Spacer(modifier = Modifier.size(10.dp))
+
+            OutlinedTextField(value = state.value.description,
+                onValueChange = { viewModel.onEvent(EditEvent.ChangeDescription(it)) },
+                label = { Text(text = stringResource(id = viewModel.state.value.descriptionPlaceholder))},
+                modifier = Modifier.fillMaxWidth())
+
+            Spacer(modifier = Modifier.size(10.dp))
+
+            OutlinedTextField(value = state.value.imageUrl,
+                onValueChange = { viewModel.onEvent(EditEvent.ChangeImageUrl(it)) },
+                label = { Text(text = stringResource(id = viewModel.state.value.imageUrlPlaceHolder))},
+                modifier = Modifier.fillMaxWidth())
+
+            Spacer(modifier = Modifier.size(10.dp))
+
+            Button(onClick = {
+                viewModel.onEvent(EditEvent.Update)
+            },
+                modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                Text(text = "Update")
+            }
+            if(state.value.isLoading){
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+            }
         }
     }
+
 }

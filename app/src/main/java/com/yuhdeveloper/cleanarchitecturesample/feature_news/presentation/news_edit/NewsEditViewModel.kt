@@ -4,11 +4,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.yuhdeveloper.cleanarchitecturesample.feature_news.data.dto.NewsDto
+import com.yuhdeveloper.cleanarchitecturesample.common.Resource
 import com.yuhdeveloper.cleanarchitecturesample.feature_news.domain.model.News
 import com.yuhdeveloper.cleanarchitecturesample.feature_news.domain.use_case.NewsUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,13 +31,28 @@ class NewsEditViewModel @Inject constructor(
         val savedId = savedStateHandle.get<Int>("newsId")
         if (savedId != -1 && savedId != null) {
             viewModelScope.launch {
-                val data = useCases.getNewsById(savedId)
-                _state.value = _state.value.copy(
-                    id = data.newsId,
-                    title = data.newsTitle,
-                    description = data.newsDescription,
-                    imageUrl = data.newsPicture
-                )
+                useCases.getNewsById(savedId).onEach {
+                    when(it){
+                        is Resource.Error -> {
+                            _state.value.isLoading = false
+                            _eventFlow.emit(EditEffect.showMessage("${it.error}"))
+                        }
+                        Resource.Loading -> {
+                            _state.value.isLoading = true
+
+                        }
+                        is Resource.Success -> {
+                            _state.value.isLoading = false
+
+                            _state.value = _state.value.copy(
+                                id = it.data.id,
+                                title = it.data.title,
+                                description = it.data.description,
+                                imageUrl = it.data.imageUrl
+                            )
+                        }
+                    }
+                }.launchIn(viewModelScope)
             }
         }
     }
@@ -69,17 +86,27 @@ class NewsEditViewModel @Inject constructor(
             is EditEvent.Update -> {
                 viewModelScope.launch {
                     useCases.updateNewsById(
-                        news = NewsDto(
-                            newsId = _state.value.id,
-                            newsTitle = _state.value.title,
-                            newsDescription = _state.value.description,
-                            newsPicture = _state.value.imageUrl,
-                            userId = _state.value.userId,
-                            createdAt = _state.value.createdAt,
-                            username = _state.value.username,
+                        news = News(
+                            id = _state.value.id,
+                            title = _state.value.title,
+                            description = _state.value.description,
+                            imageUrl = _state.value.imageUrl,
                         )
-                    )
-                    eventFlow.emit(EditEffect.onBack)
+                    ).onEach {
+                        when(it){
+                            is Resource.Error -> {
+                                _state.value.isLoading = false
+                                eventFlow.emit(EditEffect.showMessage("${it.error}"))
+                            }
+                            Resource.Loading -> {
+                                _state.value.isLoading = true
+                            }
+                            is Resource.Success -> {
+                                _state.value.isLoading = false
+                                _eventFlow.emit(EditEffect.onBack)
+                            }
+                        }
+                    }.launchIn(viewModelScope)
                 }
             }
         }
