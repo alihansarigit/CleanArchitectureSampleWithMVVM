@@ -1,5 +1,6 @@
 # CleanArchitectureSampleWithMVVM
 Technologies
+
 Retrofit2
 Coil
 FirebaseCrashlytics & FirebaseAnalytics
